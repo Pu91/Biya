@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>লোকেশন ও ডিরেকশন</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: radial-gradient(circle, #fff3e0 0%, #ffb74d 100%);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .container {
+            width: 100%; max-width: 700px; background: #fff; padding: 30px;
+            border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 4px solid #800000; text-align: center;
+        }
+
+        h2 { 
+            color: #800000; margin-bottom: 15px; font-size: 28px; 
+            font-family: 'Georgia', serif; border-bottom: 2px solid #d4af37; 
+            display: inline-block; padding-bottom: 10px;
+        }
+
+        p {
+            color: #444; font-size: 16px; margin-bottom: 25px; line-height: 1.6;
+        }
+
+        /* গুগল ম্যাপের কন্টেইনার (ফ্রি Embed) */
+        .map-container {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #d4af37;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: #e9e9e9;
+            margin-bottom: 25px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 350px;
+            border: none;
+            display: block;
+        }
+
+        /* ডিরেকশন বাটন */
+        .btn-direction {
+            display: inline-block; padding: 15px 40px;
+            background: linear-gradient(45deg, #2e7d32, #4caf50); /* গুগল ম্যাপের মতো সবুজ থিম */
+            color: #fff; border: 2px solid #1b5e20; border-radius: 30px; 
+            font-size: 18px; font-weight: bold; cursor: pointer; text-decoration: none; 
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); 
+            animation: pulse 1.5s infinite; transition: 0.3s;
+            margin-bottom: 10px;
+        }
+        .btn-direction:hover { background: #1b5e20; color: #fff; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* আগের পেজে ফেরার বাটন */
+        .btn-back {
+            display: inline-block; margin-top: 10px; padding: 10px 25px;
+            background: #800000; color: #fff; border-radius: 20px; text-decoration: none;
+            font-size: 16px; border: 2px solid #d4af37; transition: 0.3s;
+        }
+        .btn-back:hover { background: #b71c1c; }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            h2 { font-size: 24px; }
+            .map-container iframe { height: 250px; }
+            .btn-direction { font-size: 16px; padding: 12px 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>📍 বিয়ের স্থান ও রাস্তা</h2>
+        <p>নিচের ম্যাপ থেকে বিয়ের স্থানটি দেখে নিন। আপনার বর্তমান অবস্থান থেকে সরাসরি রাস্তা (Direction) জানতে নিচের সবুজ বাটনে ক্লিক করুন।</p>
+        
+        <!-- ফ্রি গুগল ম্যাপ এম্বেড (API ছাড়াই চলবে) -->
+        <div class="map-container">
+            <!-- এখানে 'Siliguri' এর জায়গায় আপনার নির্দিষ্ট জায়গার নাম দিতে পারেন -->
+            <iframe 
+                src="https://maps.google.com/maps?q=Siliguri&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+
+        <!-- সরাসরি গুগল ম্যাপে ডিরেকশন খোলার লিংক (API প্রয়োজন নেই) -->
+        <!-- destination= এর পর আপনার লোকেশনের নাম লিখে দিন -->
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Siliguri" target="_blank" class="btn-direction">
+            🗺️ রাস্তা (Direction) দেখুন
+        </a>
+        <br>
+        
+        <!-- মজার পেজে ফিরে যাওয়ার লিংক -->
+        <a href="funny.html" class="btn-back">⬅️ পেছনে ফিরে যান</a>
+    </div>
+
+</body>
+</html>
