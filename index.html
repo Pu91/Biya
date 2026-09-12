@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিয়ের কার্ড - খাম</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: radial-gradient(circle, #fff3e0 0%, #ffb74d 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            perspective: 1000px; 
+        }
+
+        #envelope-section {
+            transition: transform 1s ease, opacity 1s ease;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 400px;
+            height: 260px;
+        }
+
+        /* খামের পেছনের অংশ */
+        .envelope-back {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: #800000;
+            border-radius: 5px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border: 2px solid #d4af37;
+        }
+
+        /* ভেতরের কার্ড */
+        .card {
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            background: #8b0000;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            z-index: 1; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #d4af37;
+            transition: transform 1s ease-in-out 0.6s, z-index 0s 0.6s;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 -5px 15px rgba(0,0,0,0.3);
+            /* কার্ডের নিজস্ব ডিজাইন */
+            background-image: radial-gradient(circle, rgba(212, 175, 55, 0.1) 20%, transparent 20%),
+                              radial-gradient(circle, rgba(212, 175, 55, 0.1) 20%, transparent 20%);
+            background-size: 40px 40px;
+        }
+
+        .card .mandala {
+            font-size: 50px; color: #d4af37; margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+        .card h1 { font-size: 32px; font-weight: bold; margin-bottom: 5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .card h2 { font-size: 20px; font-family: 'Georgia', serif; border-top: 1px solid #d4af37; border-bottom: 1px solid #d4af37; padding: 5px 15px; }
+
+        /* খামের সামনের অংশ */
+        .envelope-front {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
+        }
+
+        .flap-left {
+            position: absolute; top: 0; left: 0; width: 55%; height: 100%;
+            background: #990000;
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            border-right: 2px solid rgba(212,175,55,0.3);
+        }
+        .flap-right {
+            position: absolute; top: 0; right: 0; width: 55%; height: 100%;
+            background: #990000;
+            clip-path: polygon(100% 0, 0 50%, 100% 100%);
+            border-left: 2px solid rgba(212,175,55,0.3);
+        }
+        
+        /* খামের নিচের দিকের ডিজাইন (রাজকীয় ফিল) */
+        .flap-bottom {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+            background: #800000;
+            clip-path: polygon(0 100%, 50% 0, 100% 100%);
+            filter: drop-shadow(0 -5px 10px rgba(0,0,0,0.3));
+            display: flex; justify-content: center; align-items: flex-end;
+            padding-bottom: 15px;
+        }
+
+        .flap-bottom::before {
+            content: '❂';
+            font-size: 60px;
+            color: #d4af37;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            opacity: 0.8;
+        }
+
+        /* উপরের ঢাকনা */
+        .flap-top-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 65%;
+            z-index: 5;
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .flap-triangle {
+            width: 100%; height: 100%;
+            background: #a40000;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            /* সোনালীর প্যাটার্ন */
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(212, 175, 55, 0.15) 15px, rgba(212, 175, 55, 0.15) 30px);
+        }
+
+        /* গোল্ডেন সিল (কাটা পড়বে না) */
+        .seal {
+            position: absolute; left: 50%; bottom: -30px; 
+            transform: translateX(-50%);
+            width: 70px; height: 70px;
+            background: radial-gradient(circle, #fbc02d, #f57f17); 
+            border-radius: 50%; z-index: 6; cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            color: #800000; font-weight: bold; font-size: 16px; border: 3px dashed #800000;
+            transition: all 0.5s ease;
+        }
+        
+        .seal:hover { transform: translateX(-50%) scale(1.1); box-shadow: 0 8px 20px rgba(255,215,0,0.6); }
+
+        /* অ্যানিমেশন ক্লাস */
+        .envelope-wrapper.open .flap-top-container { transform: rotateX(180deg); z-index: 1; }
+        .envelope-wrapper.open .seal { opacity: 0; transform: translateX(-50%) scale(2); filter: blur(5px); pointer-events: none; }
+        .envelope-wrapper.open .card { transform: translateY(-150px); z-index: 4; }
+        #envelope-section.hide { transform: scale(0.6) translateY(-100vh); opacity: 0; }
+
+        @media (max-width: 500px) {
+            .envelope-wrapper { width: 320px; height: 210px; }
+            .envelope-wrapper.open .card { transform: translateY(-120px); }
+            .card h1 { font-size: 26px; }
+            .card h2 { font-size: 16px; }
+            .seal { width: 60px; height: 60px; font-size: 14px; bottom: -25px; }
+            .flap-bottom::before { font-size: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="envelope-section">
+        <div class="envelope-wrapper" id="envelope-wrapper">
+            <div class="envelope-back"></div>
+            
+            <div class="card" id="card">
+                <div class="mandala">❀</div>
+                <h1>শুভ বিবাহ</h1>
+                <h2>রাহুল ও অঞ্জলি</h2>
+            </div>
+            
+            <div class="envelope-front">
+                <div class="flap-left"></div>
+                <div class="flap-right"></div>
+                <div class="flap-bottom"></div>
+            </div>
+
+            <div class="flap-top-container" id="flap-top">
+                <div class="flap-triangle"></div>
+                <div class="seal" id="seal">খুলুন</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const seal = document.getElementById('seal');
+        const envelopeWrapper = document.getElementById('envelope-wrapper');
+        const envelopeSection = document.getElementById('envelope-section');
+
+        seal.addEventListener('click', () => {
+            envelopeWrapper.classList.add('open');
+            setTimeout(() => { envelopeSection.classList.add('hide'); }, 2500); 
+            setTimeout(() => { window.location.href = "family.html"; }, 3500); 
+        });
+    </script>
+</body>
+</html>
